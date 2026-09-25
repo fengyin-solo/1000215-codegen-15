@@ -28,6 +28,27 @@ class EntryPayload(BaseModel):
     remark: str | None = None
 
 
+class BatchCheckPayload(BaseModel):
+    """批量核对入参：多选结算对象，可选批次号用于只重试失败项或重复提交回放。"""
+
+    entry_ids: list[int] = Field(default_factory=list)
+    batch_no: str | None = None
+    remark: str | None = None
+
+
+class BatchCheckResult(BaseModel):
+    """批量核对整组结果：汇总标记、逐条明细与失败对象清单共用同一份数据。"""
+
+    ok: bool
+    message: str
+    batch_no: str
+    round: int = 1
+    replayed: bool = False
+    summary: dict[str, Any] = Field(default_factory=dict)
+    items: list[dict[str, Any]] = Field(default_factory=list)
+    failed_ids: list[int] = Field(default_factory=list)
+
+
 
 class ScriptEntry(BaseModel):
     """剧本明细结构。"""
