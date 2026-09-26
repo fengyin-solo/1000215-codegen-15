@@ -28,6 +28,18 @@ class EntryPayload(BaseModel):
     remark: str | None = None
 
 
+class BatchVerifyResult(BaseModel):
+    """批量核对结果：整组按通过、差额、争议分组，失败项支持按编号重试。"""
+
+    ok: bool
+    message: str
+    batch_id: str
+    idempotent: bool = False
+    summary: dict[str, int]
+    results: list[dict[str, Any]]
+    failed_ids: list[int]
+
+
 
 class ScriptEntry(BaseModel):
     """剧本明细结构。"""
